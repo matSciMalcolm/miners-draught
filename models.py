@@ -36,3 +36,28 @@ class Schema:
         '''
 
         self.conn.execute(query)
+
+
+class ToDoModel:
+    """Binds common database actions to sql queries.
+    """    
+
+    TABLENAME = 'TODO'
+
+    def __init__(self):
+        self.conn = sqlite3.connect('todo.db')
+
+    def create(self, text, description):
+        query = f'insert into {TABLENAME} ' \
+                f'(Title, Description) ' \
+                f'values ("{text}","{description}")'
+
+        result = self.conn.execute(query)
+        return result
+
+class ToDoService:
+    def __init__(self):
+        self.model = ToDoModel()
+
+    def create(self, params):
+        self.model.create(params["text"], params["Description"])
